@@ -47,7 +47,19 @@ namespace CagroLab.Controllers
                 Lab_Password = model.Lab_Password
             };
 
+            var account = new Account
+            {
+                Username = model.Email,
+                Account_Password = model.Lab_Password,
+                Full_Name = model.Lab_Name,
+                Is_Active = true,
+                Main_Account = true,
+                Lab = lab,
+            };
+
+
             _dbContext.Lab.Add(lab);
+            _dbContext.Account.Add(account);
             _dbContext.SaveChanges();
 
             return RedirectToAction("Login");
@@ -71,6 +83,9 @@ namespace CagroLab.Controllers
             var lab = _dbContext.Lab
                 .FirstOrDefault(l => (l.Lab_Username == model.Username || l.Email == model.Username) && l.Lab_Password == model.Password);
 
+            var account = _dbContext.Account
+                .FirstOrDefault(l => (l.Username == model.Username || l.Full_Name == model.Username) && l.Account_Password == model.Password);
+
             if (lab is null)
             {
                 ModelState.AddModelError("", "Invalid login attempt.");
@@ -78,6 +93,7 @@ namespace CagroLab.Controllers
             }
 
             HttpContext.Session.SetInt32("Lab_Id", lab.Id);
+            HttpContext.Session.SetInt32("Account_Id", account.Id);
             return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
         }
 
@@ -120,6 +136,7 @@ namespace CagroLab.Controllers
                         Last_Login = DateTime.Now
                     };
 
+                   
                     _dbContext.Account.Add(account);
                     _dbContext.SaveChanges();
 

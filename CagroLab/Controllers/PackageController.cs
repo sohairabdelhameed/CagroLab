@@ -38,7 +38,7 @@ namespace CagroLab.Controllers
         public async Task<IActionResult> PackagesByAccount(int id)
         {
             var packages = await _dbContext.Package
-                .Where(p => p.Account_Id == id) 
+                .Where(p => p.Account_Id == id)
                 .Include(p => p.Account)
                 .Include(p => p.Lab)
                 .ToListAsync();
@@ -53,8 +53,10 @@ namespace CagroLab.Controllers
 
 
 
-        public IActionResult Index(int? accountId)
+        public IActionResult Index()
         {
+            //var labId = HttpContext.Session.GetInt32("Lab_Id");
+            var accountId = HttpContext.Session.GetInt32("Account_Id");
             if (accountId == null)
             {
                 return BadRequest("Account ID is required.");
@@ -67,19 +69,17 @@ namespace CagroLab.Controllers
             var viewModel = new PackageListViewModel()
             {
                 Packages = packages.ToList(),
-                Account_Id = accountId
+                Account_Id = accountId,
+                NewPackage = new CreatePackageDto()
             };
-            //if (packages == null || !packages.Any())
-            //{
-            //    return NotFound("No packages found for the given account.");
-            //}
 
             return View(viewModel);
         }
 
-        public IActionResult Create(int? accountId)
+        public IActionResult Create()
         {
             var labId = HttpContext.Session.GetInt32("Lab_Id");
+            var accountId = HttpContext.Session.GetInt32("Account_Id");
             if (labId == null)
             {
                 return RedirectToAction("Login", "Account"); // Redirect to login if no Lab ID
@@ -87,6 +87,7 @@ namespace CagroLab.Controllers
 
             var accounts = _dbContext.Account
                 .Where(a => a.Lab_Id == labId)
+                .Include(x=>x.Lab)
                 .Select(a => new SelectListItem
                 {
                     Value = a.Id.ToString(),
@@ -103,15 +104,12 @@ namespace CagroLab.Controllers
             return View(viewModel);
         }
 
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(PackageViewModel viewModel)
+        public IActionResult Create(CreatePackageDto viewModel)
         {
             _logger.LogInformation("Create package request: {@ViewModel}", viewModel);
-
+            var accountId = HttpContext.Session.GetInt32("Account_Id");
             if (ModelState.IsValid)
             {
                 var labId = HttpContext.Session.GetInt32("Lab_Id");
@@ -123,10 +121,10 @@ namespace CagroLab.Controllers
 
                 var package = new Package
                 {
-                    Package_Date = viewModel.Package_Date,
+                    Package_Date = DateTime.Now,
                     Title = viewModel.Title,
-                    Package_Description = viewModel.Package_Description,
-                    Account_Id = viewModel.Account_Id,
+                    Package_Description = viewModel.Description,
+                    Account_Id = (int)viewModel.Account_Id!,
                     Lab_Id = (int)labId
                 };
 
@@ -161,7 +159,7 @@ namespace CagroLab.Controllers
                     Text = a.Username
                 }).ToList();
 
-            viewModel.Accounts = accounts;
+            //viewModel.Accounts = accounts;
             return View(viewModel);
         }
 
