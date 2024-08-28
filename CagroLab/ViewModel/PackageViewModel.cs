@@ -26,7 +26,7 @@ namespace CagroLab.ViewModel
 
         public int Lab_Id { get; set; }
         public Lab? Lab { get; set; }
-
+     
         public IEnumerable<SelectListItem>? Accounts { get; set; }
     }
 

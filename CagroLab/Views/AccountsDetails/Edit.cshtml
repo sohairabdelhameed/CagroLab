@@ -1,24 +1,36 @@
-﻿@model CagroLab.Models.Account
-
-<h2>Edit Account</h2>
+﻿@model CagroLab.ViewModel.AccountViewModel
 
 <form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Lab_Id" />
+
     <div class="form-group">
-        <label asp-for="Username" class="control-label"></label>
+        <label asp-for="Username"></label>
         <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Full_Name" class="control-label"></label>
+        <label asp-for="Full_Name"></label>
         <input asp-for="Full_Name" class="form-control" />
+        <span asp-validation-for="Full_Name" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Last_Activity" class="control-label"></label>
-        <input asp-for="Last_Activity" class="form-control" />
+        <label asp-for="Account_Password">New Password</label>
+        <input asp-for="Account_Password" class="form-control" type="password" />
+        <span asp-validation-for="Account_Password" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Is_Active" class="control-label"></label>
-        <input asp-for="Is_Active" class="form-control" />
+        <label asp-for="Is_Active"></label>
+        <input asp-for="Is_Active" class="form-check-input" type="checkbox" />
     </div>
-    <input type="submit" value="Save" class="btn btn-primary" />
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+
+    <div class="form-group">
+        <label asp-for="Main_Account"></label>
+        <input asp-for="Main_Account" class="form-check-input" type="checkbox" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>

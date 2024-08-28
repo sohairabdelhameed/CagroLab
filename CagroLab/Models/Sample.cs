@@ -11,14 +11,18 @@
 
         public string? Patient_Name  { get; set; }
 
+       
         public int Patient_Id { get; set; }
 
         public string? Patient_Phone { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
         public int Account_Id { get; set; }
        
         public Account Account { get; set; }
        
+
+
 
 
 
