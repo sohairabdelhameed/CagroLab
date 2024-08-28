@@ -1,0 +1,164 @@
+﻿@{
+    ViewData["Title"] = "PackageMenegement Page";
+}
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="~/css/package.css" rel="stylesheet" />
+<div class="container min-vh-100">
+
+       <!-- Section for the subheader and button -->
+    <div class="row">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center my-4 position-relative">
+                <h2 class="fw-bold position-relative z-1" style="background-color: #21D8B3; padding-left: 30px;;">
+                    <span style="background-color: white; padding: 0 10px;">Package <i>Management</i></span>
+                </h2>
+                <button class="btn btn-add" style="background-color: #21D8B3; color: white;">
+                    Add new package
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <table id="example" class="table">
+        <thead class="table-light custom-header">
+
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr> 
+                <td>Aarrett Winters</td>
+                <td>Accountant</td>
+                <td>63</td>
+                <td>2011-04-25</td>
+                <td class="text-success">Done</td>
+            </tr>
+            <tr>
+                <td>Aarrett Winters</td>
+                <td>Accountant</td>
+                <td>63</td>
+                <td>2011-04-25</td>
+                <td class="text-success">Done</td>
+            </tr>
+            <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>61</td>
+                <td>2011-04-25</td>
+                <td class="text-success">Done</td>
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>63</td>
+                <td>2011-04-25</td>
+                <td class="text-success">Done</td>
+            </tr>
+            <tr>
+                <td>Ashton Cox</td>
+                <td>Junior Technical Author</td>
+                <td>66</td>
+                <td>2009-01-12</td>
+                <td class="text-primary">Working on..</td>
+            </tr>
+            <tr>
+                <td>Cedric Kelly</td>
+                <td>Senior Javascript Developer</td>
+                <td>22</td>
+                <td>2012-03-29</td>
+                <td class="text-danger">Canceled</td>
+            </tr>
+            <tr>
+                <td>Airi Satou</td>
+                <td>Tokyo</td>
+                <td>33</td>
+                <td>2008-11-28</td>
+                <td class="text-danger">Canceled</td>
+            </tr>
+            <tr>
+                <td>Brielle Williamson</td>
+                <td>Integration Specialist</td>
+                <td>61</td>
+                <td>2012-12-02</td>
+                <td class="text-danger">Canceled</td>
+            </tr>
+            <tr>
+                <td>Herrod Chandler</td>
+                <td>San Francisco</td>
+                <td>59</td>
+                <td>2012-08-06</td>
+                <td class="text-primary">Working on..</td>
+            </tr>
+            <tr>
+                <td>Rhona Davidson</td>
+                <td>Integration Specialist</td>
+                <td>55</td>
+                <td>2010-10-14</td>
+                <td class="text-primary">Working on..</td>
+            </tr>
+            <tr>
+                <td>Cedric Kelly</td>
+                <td>Senior Javascript Developer</td>
+                <td>22</td>
+                <td>2012-03-29</td>
+                <td class="text-danger">Canceled</td>
+            </tr>
+            <tr>
+                <td>Airi Satou</td>
+                <td>Tokyo</td>
+                <td>33</td>
+                <td>2008-11-28</td>
+                <td class="text-danger">Canceled</td>
+            </tr>
+            <tr>
+                <td>Brielle Williamson</td>
+                <td>Integration Specialist</td>
+                <td>61</td>
+                <td>2012-12-02</td>
+                <td class="text-danger">Canceled</td>
+            </tr>
+            <tr>
+                <td>Herrod Chandler</td>
+                <td>San Francisco</td>
+                <td>59</td>
+                <td>2012-08-06</td>
+                <td class="text-primary">Working on..</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                paging: true,          
+                searching: true,     
+                ordering: true,        
+                responsive: true,     
+                lengthChange: true,    
+                pageLength: 10          
+            });
+        });
+    </script>
+}

@@ -1,0 +1,54 @@
+﻿@model CagroLab.Models.Package
+
+@{
+    ViewData["Title"] = "Delete Package";
+}
+
+<h1>Delete Package</h1>
+
+<h4>Package</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        Id
+    </dt>
+    <dd class="col-sm-10">
+        @Model.Id
+    </dd>
+    <dt class="col-sm-2">
+        Package Date
+    </dt>
+    <dd class="col-sm-10">
+        @Model.Package_Date.ToShortDateString()
+    </dd>
+    <dt class="col-sm-2">
+        Title
+    </dt>
+    <dd class="col-sm-10">
+        @Model.Title
+    </dd>
+    <dt class="col-sm-2">
+        Description
+    </dt>
+    <dd class="col-sm-10">
+        @Model.Package_Description
+    </dd>
+    <dt class="col-sm-2">
+        Account
+    </dt>
+    <dd class="col-sm-10">
+        @Model.Account.Full_Name
+    </dd>
+    <dt class="col-sm-2">
+        Lab
+    </dt>
+    <dd class="col-sm-10">
+        @Model.Lab.Lab_Name
+    </dd>
+</dl>
+
+<form asp-action="DeleteConfirmed">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Delete" class="btn btn-danger" /> |
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>

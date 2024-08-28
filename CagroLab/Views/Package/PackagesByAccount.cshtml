@@ -1,0 +1,37 @@
+﻿@model IEnumerable<CagroLab.Models.Package>
+
+@{
+    ViewData["Title"] = "Packages by Account";
+}
+
+<h1>Packages for Account: @Model.FirstOrDefault()?.Account.Full_Name</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Package Date</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Lab</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Package_Date.ToShortDateString()</td>
+                <td>@item.Title</td>
+                <td>@item.Package_Description</td>
+                <td>@item.Lab.Lab_Name</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back to All Packages</a>

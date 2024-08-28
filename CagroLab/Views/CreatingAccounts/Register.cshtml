@@ -1,0 +1,57 @@
+﻿@model CagroLab.ViewModel.LabRegistrationViewModel
+
+@{
+    ViewData["Title"] = "Lab Registration";
+}
+
+<h2>Lab Registration</h2>
+
+<form asp-action="Register" method="post">
+    <div class="form-group">
+        <label asp-for="Lab_Name"></label>
+        <input asp-for="Lab_Name" class="form-control" />
+        <span asp-validation-for="Lab_Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Lab_Phone"></label>
+        <input asp-for="Lab_Phone" class="form-control" />
+        <span asp-validation-for="Lab_Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Lab_Username"></label>
+        <input asp-for="Lab_Username" class="form-control" />
+        <span asp-validation-for="Lab_Username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Lab_Password"></label>
+        <input asp-for="Lab_Password" type="password" class="form-control" />
+        <span asp-validation-for="Lab_Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Region"></label>
+        <input asp-for="Region" class="form-control" />
+        <span asp-validation-for="Region" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="City"></label>
+        <input asp-for="City" class="form-control" />
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>

@@ -1,0 +1,35 @@
+﻿@model CagroLab.Models.Account
+
+<h2>Delete Account</h2>
+
+<h3>Are you sure you want to delete this account?</h3>
+
+<div>
+    <h4>@Model.Username</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Full Name
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Full_Name
+        </dd>
+        <dt class="col-sm-2">
+            Last Activity
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Last_Activity
+        </dd>
+        <dt class="col-sm-2">
+            Active
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Is_Active
+        </dd>
+    </dl>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

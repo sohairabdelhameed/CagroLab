@@ -1,0 +1,47 @@
+﻿@model CagroLab.Models.Lab
+
+@{
+    ViewData["Title"] = "Lab Details";
+}
+
+<h2>@Model.Lab_Name's Details</h2>
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Email)</th>
+        <td>@Html.DisplayFor(model => model.Email)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Lab_Phone)</th>
+        <td>@Html.DisplayFor(model => model.Lab_Phone)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Address)</th>
+        <td>@Html.DisplayFor(model => model.Address)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Region)</th>
+        <td>@Html.DisplayFor(model => model.Region)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.City)</th>
+        <td>@Html.DisplayFor(model => model.City)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Lab_Username)</th>
+        <td>@Html.DisplayFor(model => model.Lab_Username)</td>
+    </tr>
+</table>
+
+<p>
+    <a asp-controller="CreatingAccounts" asp-action="Create" class="btn btn-primary">Create Account</a>
+</p>
+
+<p>
+    <a asp-controller="AccountsDetails" asp-action="ViewAccounts" class="btn btn-primary">View Account</a>
+</p>
+
+
+
+
+
