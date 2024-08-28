@@ -8,6 +8,14 @@ namespace CagroLab.ViewModel
 
         public List<Package>? Packages { get; set; }
 
+        public CreatePackageDto NewPackage { get; set; }
+    }
 
+    public class CreatePackageDto
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+
+        public int? Account_Id { get; set; }
     }
 }

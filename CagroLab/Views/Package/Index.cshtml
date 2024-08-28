@@ -1,61 +1,113 @@
 ﻿@model CagroLab.ViewModel.PackageListViewModel
-
 @{
     ViewData["Title"] = "Packages";
 }
 
-<h2>Packages</h2>
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="~/css/package.css" rel="stylesheet" />
+<div class="container min-vh-100">
+    <!-- Package List -->
+    <div class="row">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center my-4 position-relative">
+                <h2 class="fw-bold position-relative z-1" style="background-color: #21D8B3; padding-left: 30px;">
+                    <span style="background-color: white; padding: 0 10px;">Package <i>Management</i></span>
+                </h2>
+                <button class="btn btn-add" style="background-color: #21D8B3; color: white;" type="button" data-bs-toggle="modal" data-bs-target="#createPackageModal">
+                    Add new package
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
 
-<p>
-    <a asp-action="Create" asp-route-accountId="@Model.Account_Id" class="btn btn-primary">Create New</a>
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Date
-            </th>
-            <th>
-                Title
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Account
-            </th>
-            <th>
-                Lab
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Packages)
-        {
+    <table id="example" class="table">
+        <thead class="table-light custom-header">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Package_Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Package_Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Account.Full_Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Lab.Lab_Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
-                </td>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Package Date</th>
+                <th>Lab Name</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @if (Model.Packages != null)
+            {
+                @foreach (var package in Model.Packages)
+                {
+                    <tr>
+                        <td>@package.Id</td>
+                        <td>@package.Title</td>
+                        <td>@package.Package_Description</td>
+                        <td>@package.Package_Date.ToString("yyyy-MM-dd")</td>
+                        <td>@package.Lab?.Lab_Name</td> <!-- Assuming LabName is a property in the Lab model -->
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No packages available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal for Creating a New Package -->
+
+
+<!-- ... Other HTML content ... -->
+
+<!-- Modal for Creating a New Package -->
+<div class="modal fade" id="createPackageModal" tabindex="-1" aria-labelledby="createPackageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createPackageModalLabel">Create New Package</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form to Post Data -->
+                <form asp-action="Create" method="post" id="createPackageForm">
+                    <input hidden id="Account_Id" name="Account_Id" type="text" value="@Model.Account_Id" />
+                    <div class="input-group mb-2">
+                        <input id="Title" name="Title" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Title" />
+                    </div>
+                    <div class="input-group mb-2">
+                        <textarea id="Description" name="Description" class="form-control form-control-lg bg-light fs-6" placeholder="Description" style="height:180px"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="createPackageForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                lengthChange: true,
+                pageLength: 10
+            });
+        });
+    </script>
+}

@@ -47,7 +47,19 @@ namespace CagroLab.Controllers
                 Lab_Password = model.Lab_Password
             };
 
+            var account = new Account
+            {
+                Username = model.Email,
+                Account_Password = model.Lab_Password,
+                Full_Name = model.Lab_Name,
+                Is_Active = true,
+                Main_Account = true,
+                Lab = lab,
+            };
+
+
             _dbContext.Lab.Add(lab);
+            _dbContext.Account.Add(account);
             _dbContext.SaveChanges();
 
             return RedirectToAction("Login");
@@ -73,17 +85,7 @@ namespace CagroLab.Controllers
             var lab = _dbContext.Lab
                 .FirstOrDefault(l => (l.Lab_Username == model.Username || l.Email == model.Username) && l.Lab_Password == model.Password);
 
-            if (lab != null)
-            {
-                HttpContext.Session.SetInt32("Lab_Id", lab.Id);
-                return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
-            }
-
-            // Check if the login is for an Account
-            var account = _dbContext.Account
-                .FirstOrDefault(a => (a.Username == model.Username ) && a.Account_Password == model.Password);
-
-            if (account != null)
+            if (lab is null)
             {
                 HttpContext.Session.SetInt32("Account_Id", account.Id);
                 return RedirectToAction("ADetails", "AccountsDetails", new { id = account.Id });
@@ -94,6 +96,9 @@ namespace CagroLab.Controllers
             return View(model);
         }
 
+            HttpContext.Session.SetInt32("Lab_Id", lab.Id);
+            return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
+        }
 
         [HttpGet]
         public IActionResult Create()
@@ -134,6 +139,7 @@ namespace CagroLab.Controllers
                         Last_Login = DateTime.Now
                     };
 
+                   
                     _dbContext.Account.Add(account);
                     _dbContext.SaveChanges();
 
