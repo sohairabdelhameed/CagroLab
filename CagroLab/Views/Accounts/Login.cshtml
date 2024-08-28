@@ -7,13 +7,11 @@
 <!--  MAIN Container -->
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <!-- Login -->
-
     <div class="row border rounded-5 p-3 bg-white shadow box-area">
         <!-- Left -->
-
         <div class="col-md-6 rounded-3 d-flex justify-content-center align-items-center flex-column left-box" style="background: #21D8B3;">
             <div class="featured-image mb-3">
-                <img src="~/images/docktor.png" alt="imaege" class="img-fluid" style="width: 2500px;">
+                <img src="~/images/docktor.png" alt="image" class="img-fluid" style="width: 2500px;">
             </div>
             <p class="text-white fs-2" style="font-weight: 600;">
                 Welcome
@@ -24,75 +22,63 @@
         </div>
 
         <!-- Right -->
+        <div class="col-md-6 right-box">
+            <div class="row align-items-center">
+                <div class="header-text mb-3" style="text-align: center;">
+                    <p>Hello, Again</p>
+                    <p>We are happy to have you back</p>
+                </div>
 
-            <div class="col-md-6 right-box">
-                
-              
-                <div class="row align-items-center">
-                    <div class="header-text mb-3" style="text-align: center;">
-                        <p>Hello, Again</p>
-                        <p>We are happy to have you back</p>
+                <form asp-action="Login" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <!-- Validation Summary -->
+                    <div class="alert mb-3">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     </div>
-                    @* <div class="form-group">
-                        <label asp-for="Username"></label>
-                        <input asp-for="Username" class="form-control" />
-                        <span asp-validation-for="Username" class="text-danger"></span>
-                    </div> *@
-                    <form asp-action="Login" method="post">
+
+                    <!-- Username Input -->
                     <div class="input-group mb-3">
+                        @Html.TextBoxFor(model => model.Username, new { @class = "form-control form-control-lg bg-light fs-6", placeholder = "Username" })
+                    </div>
 
-                        <input asp-for="Username" type="text" class="form-control form-control-lg bg-light fs-6 " placeholder="Username" />
-                    </div>
-                    @* <div class="form-group">
-                        <label asp-for="Password"></label>
-                        <input asp-for="Password" type="password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div> *@
+                    <!-- Password Input -->
                     <div class="input-group mb-1">
-                        <input asp-for="Password" type="password" class="form-control form-control-lg bg-light fs-6 " placeholder="Password" />
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control form-control-lg bg-light fs-6", placeholder = "Password" })
                     </div>
+
+                    <!-- Remember Me and Forgot Password -->
                     <div class="input-group mb-5 d-flex justify-content-between">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="formCheck">
                             <label for="formCheck" class="form-check-label text-secondary"> <small>Remember Me</small></label>
-
                         </div>
-
                         <div class="forgot">
-                            <small><a href="#"> Forgot Password!</a></small>
+                            <small><a href="#">Forgot Password!</a></small>
                         </div>
                     </div>
+
+                    <!-- Submit Button -->
                     <div class="input-group mb-3">
-                       @*  <button type="submit" class="btn btn-primary">Login</button> *@
                         <button type="submit" class="btn btn-lg w-100 fs-6" style="background-color:#21D8B3">Login</button>
                     </div>
                 </form>
 
-                    <div class="input-group mb-3">
-                        <button class="btn btn-lg btn-light w-100 fs-6">
-                            <img src="~/images/whatsap.png" alt="" style="width: 20px;">
-                            <small class="me-2">Sign In With Google</small>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <small> Don't have account? <a href="#">Sign Up</a> </small>
-                    </div>
+                <!-- Sign In with Google -->
+                <div class="input-group mb-3">
+                    <button class="btn btn-lg btn-light w-100 fs-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                            <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z" />
+                        </svg>
+                        <small class="me-2">Sign In With Google</small>
+                    </button>
                 </div>
-          
-            </div>
-            @* <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div> *@
-            @* <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" type="password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div> *@
-          @*   <button type="submit" class="btn btn-primary">Login</button> *@
-    
 
-        
+                <!-- Sign Up Link -->
+                <div class="row">
+                    <small> Don't have an account? <a asp-controller="Accounts" asp-action="SignUp">Sign Up</a> </small>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
