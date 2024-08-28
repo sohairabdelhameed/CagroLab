@@ -36,16 +36,19 @@ namespace CagroLab.Migrations
                     b.Property<string>("Full_Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Is_Active")
                         .HasColumnType("bit");
 
                     b.Property<int>("Lab_Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Last_Activity")
+                    b.Property<DateTime?>("Last_Activity")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Last_Login")
+                    b.Property<DateTime?>("Last_Login")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Main_Account")
@@ -58,7 +61,7 @@ namespace CagroLab.Migrations
 
                     b.HasIndex("Lab_Id");
 
-                    b.ToTable("Account", (string)null);
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("CagroLab.Models.Lab", b =>
@@ -78,6 +81,9 @@ namespace CagroLab.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Lab_Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -95,7 +101,7 @@ namespace CagroLab.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lab", (string)null);
+                    b.ToTable("Lab");
                 });
 
             modelBuilder.Entity("CagroLab.Models.Package", b =>
@@ -108,6 +114,9 @@ namespace CagroLab.Migrations
 
                     b.Property<int>("Account_Id")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Lab_Id")
                         .HasColumnType("int");
@@ -129,7 +138,7 @@ namespace CagroLab.Migrations
 
                     b.HasIndex("Lab_Id");
 
-                    b.ToTable("Package", (string)null);
+                    b.ToTable("Package");
                 });
 
             modelBuilder.Entity("CagroLab.Models.Sample", b =>
@@ -142,6 +151,9 @@ namespace CagroLab.Migrations
 
                     b.Property<int>("Account_Id")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Package_Id")
                         .HasColumnType("int");
@@ -164,7 +176,7 @@ namespace CagroLab.Migrations
 
                     b.HasIndex("Package_Id");
 
-                    b.ToTable("Sample", (string)null);
+                    b.ToTable("Sample");
                 });
 
             modelBuilder.Entity("CagroLab.Models.Account", b =>
@@ -172,7 +184,6 @@ namespace CagroLab.Migrations
                     b.HasOne("CagroLab.Models.Lab", "Lab")
                         .WithMany("Accounts")
                         .HasForeignKey("Lab_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Lab");
@@ -183,13 +194,11 @@ namespace CagroLab.Migrations
                     b.HasOne("CagroLab.Models.Account", "Account")
                         .WithMany("Packages")
                         .HasForeignKey("Account_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CagroLab.Models.Lab", "Lab")
                         .WithMany("Packages")
                         .HasForeignKey("Lab_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
@@ -202,13 +211,11 @@ namespace CagroLab.Migrations
                     b.HasOne("CagroLab.Models.Account", "Account")
                         .WithMany("Samples")
                         .HasForeignKey("Account_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CagroLab.Models.Package", "Package")
                         .WithMany("Samples")
                         .HasForeignKey("Package_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");

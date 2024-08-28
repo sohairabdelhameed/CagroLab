@@ -29,6 +29,8 @@ namespace CagroLab.ViewModel
         [DataType(DataType.Password)]
         [Compare("Lab_Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string? ConfirmPassword { get; set; }
+
+
     }
 
 }

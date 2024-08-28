@@ -15,6 +15,7 @@
         public string? Lab_Username { get; set; }
         public string? Lab_Password { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
 
         public ICollection<Account> Accounts { get; set; } = new List<Account>();
 

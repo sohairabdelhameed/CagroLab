@@ -7,5 +7,7 @@ namespace CagroLab.ViewModel
         public int? Account_Id { get; set; }
 
         public List<Package>? Packages { get; set; }
+
+
     }
 }

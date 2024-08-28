@@ -123,7 +123,8 @@ namespace CagroLab.Controllers
 
                 var package = new Package
                 {
-                    Package_Date = viewModel.Package_Date,
+                    
+                Package_Date = viewModel.Package_Date = DateTime.Now,
                     Title = viewModel.Title,
                     Package_Description = viewModel.Package_Description,
                     Account_Id = viewModel.Account_Id,
@@ -166,20 +167,6 @@ namespace CagroLab.Controllers
         }
 
 
-
-
-
-        //public IActionResult Edit(int id)
-        //{
-        //    var package = _dbContext.Package.Find(id);
-        //    if (package == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["Account_Id"] = new SelectList(_dbContext.Account, "Id", "Username", package.Account_Id);
-        //    ViewData["Lab_Id"] = new SelectList(_dbContext.Lab, "Id", "Lab_Name", package.Lab_Id);
-        //    return View(package);
-        //}
 
         [HttpGet]
         public IActionResult Edit(int id)

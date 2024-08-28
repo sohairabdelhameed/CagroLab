@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CagroLab.Migrations
 {
     /// <inheritdoc />
-    public partial class IntialMigration : Migration
+    public partial class ADDEDFlagDeleted1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,8 @@ namespace CagroLab.Migrations
                     Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Lab_Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Lab_Password = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Lab_Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,11 +41,12 @@ namespace CagroLab.Migrations
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Account_Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Full_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Last_Activity = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Last_Login = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Last_Activity = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Last_Login = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Is_Active = table.Column<bool>(type: "bit", nullable: false),
                     Main_Account = table.Column<bool>(type: "bit", nullable: false),
-                    Lab_Id = table.Column<int>(type: "int", nullable: false)
+                    Lab_Id = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,8 +55,7 @@ namespace CagroLab.Migrations
                         name: "FK_Account_Lab_Lab_Id",
                         column: x => x.Lab_Id,
                         principalTable: "Lab",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -66,24 +67,23 @@ namespace CagroLab.Migrations
                     Package_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Package_Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    Account_Id = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Lab_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Package", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Package_Account_AccountId",
-                        column: x => x.AccountId,
+                        name: "FK_Package_Account_Account_Id",
+                        column: x => x.Account_Id,
                         principalTable: "Account",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Package_Lab_Lab_Id",
                         column: x => x.Lab_Id,
                         principalTable: "Lab",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -97,6 +97,7 @@ namespace CagroLab.Migrations
                     Patient_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Patient_Id = table.Column<int>(type: "int", nullable: false),
                     Patient_Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Account_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -106,14 +107,12 @@ namespace CagroLab.Migrations
                         name: "FK_Sample_Account_Account_Id",
                         column: x => x.Account_Id,
                         principalTable: "Account",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Sample_Package_Package_Id",
                         column: x => x.Package_Id,
                         principalTable: "Package",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -122,9 +121,9 @@ namespace CagroLab.Migrations
                 column: "Lab_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Package_AccountId",
+                name: "IX_Package_Account_Id",
                 table: "Package",
-                column: "AccountId");
+                column: "Account_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Package_Lab_Id",
