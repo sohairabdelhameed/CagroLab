@@ -64,15 +64,20 @@ namespace CagroLab.Controllers
                 .Where(p => p.Account_Id == accountId)
                 .ToList();
 
+            var viewModel = new PackageListViewModel()
+            {
+                Packages = packages.ToList(),
+                Account_Id = accountId
+            };
             //if (packages == null || !packages.Any())
             //{
             //    return NotFound("No packages found for the given account.");
             //}
 
-            return View(packages);
+            return View(viewModel);
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int? accountId)
         {
             var labId = HttpContext.Session.GetInt32("Lab_Id");
             if (labId == null)
@@ -90,18 +95,21 @@ namespace CagroLab.Controllers
 
             var viewModel = new PackageViewModel
             {
-                Accounts = accounts
+                Accounts = accounts,
+                Lab_Id = labId.Value,
+                Account_Id = accountId ?? 0 // Default to 0 if accountId is null
             };
 
             return View(viewModel);
         }
 
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(PackageViewModel viewModel)
         {
-            // Debug log to check the viewModel data
             _logger.LogInformation("Create package request: {@ViewModel}", viewModel);
 
             if (ModelState.IsValid)
@@ -127,7 +135,7 @@ namespace CagroLab.Controllers
                     _dbContext.Add(package);
                     _dbContext.SaveChanges();
                     _logger.LogInformation("Package created successfully with ID {PackageId}.", package.Id);
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new { accountId = viewModel.Account_Id });
                 }
                 catch (Exception ex)
                 {
@@ -146,7 +154,7 @@ namespace CagroLab.Controllers
 
             // Repopulate the account list and return the view
             var accounts = _dbContext.Account
-                .Where(a => a.Lab_Id == viewModel.Id)
+                .Where(a => a.Lab_Id == (int)HttpContext.Session.GetInt32("Lab_Id"))
                 .Select(a => new SelectListItem
                 {
                     Value = a.Id.ToString(),
@@ -156,6 +164,9 @@ namespace CagroLab.Controllers
             viewModel.Accounts = accounts;
             return View(viewModel);
         }
+
+
+
 
 
         public IActionResult Edit(int id)

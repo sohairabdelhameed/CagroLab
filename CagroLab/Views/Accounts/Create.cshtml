@@ -1,0 +1,37 @@
+﻿@model CagroLab.ViewModel.AccountRegistrationViewModel
+
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<h2>Create Account</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Username" class="control-label"></label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Account_Password" class="control-label"></label>
+        <input asp-for="Account_Password" type="password" class="form-control" />
+        <span asp-validation-for="Account_Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Full_Name" class="control-label"></label>
+        <input asp-for="Full_Name" class="form-control" />
+        <span asp-validation-for="Full_Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Is_Active" class="control-label"></label>
+        <input asp-for="Is_Active" class="form-check-input" />
+        <span asp-validation-for="Is_Active" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Main_Account" class="control-label"></label>
+        <input asp-for="Main_Account" class="form-check-input" />
+        <span asp-validation-for="Main_Account" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="Lab_Id" />
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
