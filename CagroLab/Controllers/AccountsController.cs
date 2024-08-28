@@ -20,37 +20,37 @@ namespace CagroLab.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult SignUp()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register(LabRegistrationViewModel model)
+        public IActionResult SignUp(LabRegistrationViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var lab = new Lab
-                {
-                    Lab_Name = model.Lab_Name,
-                    Email = model.Email,
-                    Lab_Phone = model.Lab_Phone,
-                    Address = model.Address,
-                    Region = model.Region,
-                    City = model.City,
-                    Lab_Username = model.Lab_Username,
-                    Lab_Password = model.Lab_Password
-                };
-
-                _dbContext.Lab.Add(lab);
-                _dbContext.SaveChanges();
-
-                // Redirect to login or another page after successful registration
-                return RedirectToAction("Login");
+                var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault();
+                ModelState.AddModelError(string.Empty, errorMessages);
+                return View(model);
             }
 
-            // If the model is invalid, return the view with the model to display validation errors
-            return View(model);
+            var lab = new Lab
+            {
+                Lab_Name = model.Lab_Name,
+                Email = model.Email,
+                Lab_Phone = model.Lab_Phone,
+                Address = model.Address,
+                Region = model.Region,
+                City = model.City,
+                Lab_Username = model.Lab_Username,
+                Lab_Password = model.Lab_Password
+            };
+
+            _dbContext.Lab.Add(lab);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
@@ -62,25 +62,23 @@ namespace CagroLab.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var lab = _dbContext.Lab
-                    .FirstOrDefault(l => l.Lab_Username == model.Username && l.Lab_Password == model.Password);
-
-                if (lab != null)
-                {
-                    // Store the LabId in session for later use
-                    HttpContext.Session.SetInt32("Lab_Id", lab.Id);
-
-
-                    return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                }
+                var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault();
+                ModelState.AddModelError(string.Empty, errorMessages);
+                return View(model);
             }
-            return View(model);
+            var lab = _dbContext.Lab
+                .FirstOrDefault(l => (l.Lab_Username == model.Username || l.Email == model.Username) && l.Lab_Password == model.Password);
+
+            if (lab is null)
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+
+            HttpContext.Session.SetInt32("Lab_Id", lab.Id);
+            return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
         }
 
         [HttpGet]
@@ -125,7 +123,7 @@ namespace CagroLab.Controllers
                     _dbContext.Account.Add(account);
                     _dbContext.SaveChanges();
 
-                    return RedirectToAction("ListsAccounts", "AccountsDetails", new { id = lab.Id }); 
+                    return RedirectToAction("ListsAccounts", "AccountsDetails", new { id = lab.Id });
                 }
 
                 // If the lab is not found, return an error

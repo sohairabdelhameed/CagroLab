@@ -1,5 +1,6 @@
 ﻿using CagroLab.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 
 namespace CagroLab.Context
@@ -44,7 +45,8 @@ namespace CagroLab.Context
             modelBuilder.Entity<Package>()
                 .HasMany(p => p.Samples)
                 .WithOne(s => s.Package)
-                .HasForeignKey(s => s.Package_Id);
+                .HasForeignKey(s => s.Package_Id)
+                 .OnDelete(DeleteBehavior.NoAction); ;
 
 
             // Account - Samples Relationship
