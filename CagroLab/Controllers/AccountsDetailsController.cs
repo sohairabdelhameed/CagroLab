@@ -77,6 +77,7 @@ namespace CagroLab.Controllers
             }
             return View(account);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Account account)
@@ -88,12 +89,22 @@ namespace CagroLab.Controllers
 
             if (ModelState.IsValid)
             {
-                _dbContext.Update(account);
-                _dbContext.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _dbContext.Update(account);
+                    _dbContext.SaveChanges();
+                    return RedirectToAction(nameof(ViewAccounts)); // Redirect to the list or detail view of the account
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError(ex, "Error updating account with ID {AccountId}.", account.Id);
+                    ModelState.AddModelError("", "Unable to save changes. Please try again.");
+                }
             }
             return View(account);
         }
+
+
         public IActionResult Delete(int id)
         {
             var account = _dbContext.Account.FirstOrDefault(a => a.Id == id);
@@ -111,10 +122,20 @@ namespace CagroLab.Controllers
             var account = _dbContext.Account.FirstOrDefault(a => a.Id == id);
             if (account != null)
             {
-                _dbContext.Account.Remove(account);
-                _dbContext.SaveChanges();
+                try
+                {
+                    _dbContext.Account.Remove(account);
+                    _dbContext.SaveChanges();
+                    _logger.LogInformation("Account with ID {AccountId} was deleted.", account.Id);
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError(ex, "Error deleting account with ID {AccountId}.", account.Id);
+                    ModelState.AddModelError("", "Unable to delete the account. Please try again.");
+                    return View(account); // Return the view with the account if there's an error
+                }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(ViewAccounts)); // Redirect to the list of accounts after deletion
         }
 
     }

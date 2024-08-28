@@ -1,54 +1,22 @@
 ﻿@model CagroLab.Models.Package
 
-@{
-    ViewData["Title"] = "Delete Package";
-}
+<h2>Delete Package</h2>
 
-<h1>Delete Package</h1>
+<h3>Are you sure you want to delete this package?</h3>
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Package Date</dt>
+        <dd>@Model.Package_Date.ToShortDateString()</dd>
+        <dt>Description</dt>
+        <dd>@Model.Package_Description</dd>
+    </dl>
 
-<h4>Package</h4>
-<hr />
-<dl class="row">
-    <dt class="col-sm-2">
-        Id
-    </dt>
-    <dd class="col-sm-10">
-        @Model.Id
-    </dd>
-    <dt class="col-sm-2">
-        Package Date
-    </dt>
-    <dd class="col-sm-10">
-        @Model.Package_Date.ToShortDateString()
-    </dd>
-    <dt class="col-sm-2">
-        Title
-    </dt>
-    <dd class="col-sm-10">
-        @Model.Title
-    </dd>
-    <dt class="col-sm-2">
-        Description
-    </dt>
-    <dd class="col-sm-10">
-        @Model.Package_Description
-    </dd>
-    <dt class="col-sm-2">
-        Account
-    </dt>
-    <dd class="col-sm-10">
-        @Model.Account.Full_Name
-    </dd>
-    <dt class="col-sm-2">
-        Lab
-    </dt>
-    <dd class="col-sm-10">
-        @Model.Lab.Lab_Name
-    </dd>
-</dl>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
 
-<form asp-action="DeleteConfirmed">
-    <input type="hidden" asp-for="Id" />
-    <input type="submit" value="Delete" class="btn btn-danger" /> |
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</form>
+</div>

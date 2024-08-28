@@ -169,44 +169,120 @@ namespace CagroLab.Controllers
 
 
 
+        //public IActionResult Edit(int id)
+        //{
+        //    var package = _dbContext.Package.Find(id);
+        //    if (package == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["Account_Id"] = new SelectList(_dbContext.Account, "Id", "Username", package.Account_Id);
+        //    ViewData["Lab_Id"] = new SelectList(_dbContext.Lab, "Id", "Lab_Name", package.Lab_Id);
+        //    return View(package);
+        //}
+
+        [HttpGet]
         public IActionResult Edit(int id)
         {
-            var package = _dbContext.Package.Find(id);
+            var package = _dbContext.Package
+                .FirstOrDefault(p => p.Id == id);
+
             if (package == null)
             {
                 return NotFound();
             }
-            ViewData["Account_Id"] = new SelectList(_dbContext.Account, "Id", "Username", package.Account_Id);
-            ViewData["Lab_Id"] = new SelectList(_dbContext.Lab, "Id", "Lab_Name", package.Lab_Id);
-            return View(package);
+
+            var labId = HttpContext.Session.GetInt32("Lab_Id");
+            if (labId == null)
+            {
+                return RedirectToAction("Login", "Account"); // Redirect to login if no Lab ID
+            }
+
+            var accounts = _dbContext.Account
+                .Where(a => a.Lab_Id == labId)
+                .Select(a => new SelectListItem
+                {
+                    Value = a.Id.ToString(),
+                    Text = a.Username
+                }).ToList();
+
+            var viewModel = new PackageViewModel
+            {
+                Id = package.Id,
+                Package_Date = package.Package_Date,
+                Title = package.Title,
+                Package_Description = package.Package_Description,
+                Account_Id = package.Account_Id,
+                Lab_Id = package.Lab_Id,
+                Accounts = accounts
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Package_Date,Title,Package_Description,Account_Id,Lab_Id")] Package package)
+        public IActionResult Edit(PackageViewModel viewModel)
         {
-            if (id != package.Id)
-            {
-                return BadRequest();
-            }
-
             if (ModelState.IsValid)
             {
-                _dbContext.Update(package);
-                _dbContext.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                var labId = HttpContext.Session.GetInt32("Lab_Id");
+                if (labId == null)
+                {
+                    return RedirectToAction("Login", "Account"); // Redirect to login if no Lab ID
+                }
+
+                var package = _dbContext.Package.FirstOrDefault(p => p.Id == viewModel.Id);
+                if (package == null)
+                {
+                    return NotFound();
+                }
+
+                // Update the package properties
+                package.Package_Date = viewModel.Package_Date;
+                package.Title = viewModel.Title;
+                package.Package_Description = viewModel.Package_Description;
+                package.Account_Id = viewModel.Account_Id;
+                package.Lab_Id = (int)labId;
+
+                try
+                {
+                    _dbContext.Update(package);
+                    _dbContext.SaveChanges();
+                    _logger.LogInformation("Package updated successfully with ID {PackageId}.", package.Id);
+                    return RedirectToAction(nameof(Index), new { accountId = viewModel.Account_Id });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error updating package.");
+                    ModelState.AddModelError("", "An error occurred while updating the package.");
+                }
             }
-            ViewData["Account_Id"] = new SelectList(_dbContext.Account, "Id", "Username", package.Account_Id);
-            ViewData["Lab_Id"] = new SelectList(_dbContext.Lab, "Id", "Lab_Name", package.Lab_Id);
-            return View(package);
+
+            // If ModelState is invalid, repopulate the account list and return the view
+            var accounts = _dbContext.Account
+                .Where(a => a.Lab_Id == viewModel.Lab_Id)
+                .Select(a => new SelectListItem
+                {
+                    Value = a.Id.ToString(),
+                    Text = a.Username
+                }).ToList();
+
+            viewModel.Accounts = accounts;
+            return View(viewModel);
         }
 
         public IActionResult Delete(int id)
         {
+            var labId = HttpContext.Session.GetInt32("Lab_Id");
+            if (labId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var package = _dbContext.Package
                 .Include(p => p.Account)
-                .Include(p => p.Lab)
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefault(p => p.Id == id && p.Lab_Id == labId);
 
             if (package == null)
             {
@@ -220,13 +296,39 @@ namespace CagroLab.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var package = _dbContext.Package.Find(id);
-            if (package != null)
+            var labId = HttpContext.Session.GetInt32("Lab_Id");
+            if (labId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var package = _dbContext.Package
+                .FirstOrDefault(p => p.Id == id && p.Lab_Id == labId);
+
+            if (package == null)
+            {
+                return NotFound();
+            }
+
+            try
             {
                 _dbContext.Package.Remove(package);
                 _dbContext.SaveChanges();
+                _logger.LogInformation("Package with ID {PackageId} was deleted.", package.Id);
             }
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting package.");
+                ModelState.AddModelError("", "An error occurred while deleting the package.");
+                return View(package); // Return the view with the package if there's an error
+            }
+
+            return RedirectToAction(nameof(Index), new { accountId = package.Account_Id });
         }
+
+
+
+
+
     }
 }
