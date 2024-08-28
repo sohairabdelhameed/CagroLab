@@ -68,18 +68,32 @@ namespace CagroLab.Controllers
                 ModelState.AddModelError(string.Empty, errorMessages);
                 return View(model);
             }
+
+            // Check if the login is for a Lab
             var lab = _dbContext.Lab
                 .FirstOrDefault(l => (l.Lab_Username == model.Username || l.Email == model.Username) && l.Lab_Password == model.Password);
 
-            if (lab is null)
+            if (lab != null)
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
-                return View(model);
+                HttpContext.Session.SetInt32("Lab_Id", lab.Id);
+                return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
             }
 
-            HttpContext.Session.SetInt32("Lab_Id", lab.Id);
-            return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
+            // Check if the login is for an Account
+            var account = _dbContext.Account
+                .FirstOrDefault(a => (a.Username == model.Username ) && a.Account_Password == model.Password);
+
+            if (account != null)
+            {
+                HttpContext.Session.SetInt32("Account_Id", account.Id);
+                return RedirectToAction("ADetails", "AccountsDetails", new { id = account.Id });
+            }
+
+            // If neither Lab nor Account is found, return an error
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return View(model);
         }
+
 
         [HttpGet]
         public IActionResult Create()

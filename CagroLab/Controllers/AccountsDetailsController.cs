@@ -31,6 +31,16 @@ namespace CagroLab.Controllers
 
             return View(lab);
         }
+
+        public IActionResult ADetails(int id)
+        {
+            var account = _dbContext.Account.FirstOrDefault(a => a.Id == id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return View(account);
+        }
         public IActionResult ListsAccounts(int id)
         {
             var lab = _dbContext.Lab
