@@ -61,7 +61,7 @@ namespace CagroLab.Migrations
 
                     b.HasIndex("Lab_Id");
 
-                    b.ToTable("Account");
+                    b.ToTable("Account", (string)null);
                 });
 
             modelBuilder.Entity("CagroLab.Models.Lab", b =>
@@ -101,7 +101,7 @@ namespace CagroLab.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lab");
+                    b.ToTable("Lab", (string)null);
                 });
 
             modelBuilder.Entity("CagroLab.Models.Package", b =>
@@ -138,7 +138,7 @@ namespace CagroLab.Migrations
 
                     b.HasIndex("Lab_Id");
 
-                    b.ToTable("Package");
+                    b.ToTable("Package", (string)null);
                 });
 
             modelBuilder.Entity("CagroLab.Models.Sample", b =>
@@ -176,7 +176,7 @@ namespace CagroLab.Migrations
 
                     b.HasIndex("Package_Id");
 
-                    b.ToTable("Sample");
+                    b.ToTable("Sample", (string)null);
                 });
 
             modelBuilder.Entity("CagroLab.Models.Account", b =>
