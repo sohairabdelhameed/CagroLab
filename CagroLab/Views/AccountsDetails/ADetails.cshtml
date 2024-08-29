@@ -1,0 +1,36 @@
+﻿@model CagroLab.Models.Account
+
+@{
+    ViewData["Title"] = "Account Details";
+}
+
+<h2>@Model.Full_Name's Details</h2>
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Username)</th>
+        <td>@Html.DisplayFor(model => model.Username)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Last_Login)</th>
+        <td>@Html.DisplayFor(model => model.Last_Login)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Last_Activity)</th>
+        <td>@Html.DisplayFor(model => model.Last_Activity)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Is_Active)</th>
+        <td>@Html.DisplayFor(model => model.Is_Active)</td>
+    </tr>
+</table>
+
+
+
+<p>
+    <a asp-controller="Package" asp-action="Create" asp-route-accountId="@Model.Id" class="btn btn-primary">Create Package</a>
+</p>
+
+<p>
+    <a asp-controller="Package" asp-action="Index" asp-route-accountId="@Model.Id" class="btn btn-primary">View Packages</a>
+</p>
