@@ -82,15 +82,18 @@ namespace CagroLab.Controllers
             }
 
             var account = _dbContext.Account.Include(a => a.Lab)
-                .FirstOrDefault(a => (a.Username == model.Username) && a.Account_Password == model.Password);
+                .FirstOrDefault(a => ((a.Username == model.Username)) && a.Account_Password == model.Password);
 
-            if (account == null)
+            var lab = _dbContext.Lab
+              .FirstOrDefault(a => ((a.Email == model.Username || a.Lab_Name == model.Username || a.Lab_Username == model.Username)) && a.Lab_Password == model.Password);
+
+            if (account == null && lab == null)
             {
                 model.Message = "Username and password do not match";
                 return View(model);
             }
 
-            HttpContext.Session.SetString("Username", account.Username);
+            HttpContext.Session.SetString("Username", account.Username ?? lab.Lab_Name);
             HttpContext.Session.SetInt32("Account_Id", account.Id);
             HttpContext.Session.SetInt32("Lab_Id", account.Lab_Id);
 

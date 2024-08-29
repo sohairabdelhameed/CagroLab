@@ -58,39 +58,6 @@
 <!-- Modal for Creating a New Account -->
 
 
-<!-- ... Other HTML content ... -->
-<!-- Modal for Creating a New Account -->
-<div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="createAccountModalLabel">Create New Account</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Form to Post Data -->
-                <form asp-controller="Accounts" asp-action="Create" method="post" id="createAccountForm">
-                    <input hidden id="Lab_Id" name="Lab_Id" type="text" value="@Model.Lab_Id" />
-                    <div class="input-group mb-2">
-                        <input id="Full_Name" name="Full_Name" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Full Name" />
-                    </div>
-                    <div class="input-group mb-2">
-                        <input id="Username" name="Username" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Username" />
-                    </div>
-                    <div class="input-group mb-2">
-                        <input type="password" id="Account_Password" name="Account_Password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" />
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="createAccountForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
