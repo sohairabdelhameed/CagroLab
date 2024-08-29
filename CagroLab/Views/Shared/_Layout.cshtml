@@ -35,13 +35,16 @@
                         <li class="nav-item">
                             <a class="nav-link active mx-lg-2" aria-current="page" href="#">Home</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a asp-controller="Package" asp-action="Index" class="nav-link mx-lg-2">Packages</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2" href="#">About</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link mx-lg-2" href="#">Services</a>
-                        </li>
+                        
 
                         <li class="nav-item">
                             <a class="nav-link mx-lg-2" href="#">Contract</a>
@@ -69,7 +72,7 @@
             </div>
 
 
-            <a href="#" class="login-button">login <i class="bi bi-door-open"></i></a>
+            <a asp-controller="Accounts" asp-action="Login" class="login-button">login <i class="bi bi-door-open"></i></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

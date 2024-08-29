@@ -64,6 +64,7 @@ namespace CagroLab.Controllers
 
             var packages = _dbContext.Package
                 .Where(p => p.Account_Id == accountId)
+                .Include(l=>l.Lab)
                 .ToList();
 
             var viewModel = new PackageListViewModel()

@@ -31,6 +31,7 @@
                 <th>Description</th>
                 <th>Package Date</th>
                 <th>Lab Name</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -42,8 +43,11 @@
                         <td>@package.Id</td>
                         <td>@package.Title</td>
                         <td>@package.Package_Description</td>
-                        <td>@package.Package_Date.ToString("yyyy-MM-dd")</td>
-                        <td>@package.Lab?.Lab_Name</td> <!-- Assuming LabName is a property in the Lab model -->
+                        <td>@package.Package_Date.ToString("yyyy-MM-dd hh:mm:ss")</td>
+                        <td>@package.Lab?.Lab_Name</td>
+                        <td>
+                            <a class="btn btn-light" asp-action="Details" asp-route-id="@package.Id">Details</a>
+                        </td>
                     </tr>
                 }
             }

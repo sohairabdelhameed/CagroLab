@@ -4,46 +4,76 @@
     ViewData["Title"] = "Package Details";
 }
 
-<h2>Package Details</h2>
 
-<div>
-    <h4>Package</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Package_Date)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Package_Date)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Package_Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Package_Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Account.Full_Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Account.Full_Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Lab.Lab_Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Lab.Lab_Name)
-        </dd>
-    </dl>
+<link href="~/css/detailspackage.css" rel="stylesheet" />
+
+<div class="details-sheet">
+    <h1 class="header-title">Package Details</h1>
+    <div class="details-group">
+        <div class="detail-item">
+            <label for="packageTitle" class="detail-label">Title:</label>
+            <span id="packageTitle" class="detail-input bg-light">@Model.Title</span>
+        </div>
+        <div class="detail-item">
+            <label for="packageDescription" class="detail-label">Description:</label>
+            <textarea id="packageDescription" class="detail-input bg-light" rows="4" readonly>@Model.Package_Description</textarea>
+        </div>
+        <div class="detail-item">
+            <label for="createdDate" class="detail-label">Created Date:</label>
+            <span id="createdDate" class="detail-value">@Model.Package_Date.ToString("yyyy-MM-dd hh:mm:ss")</span>
+        </div>
+        <div class="detail-item">
+            <label for="packageTitle" class="detail-label">Status:</label>
+            <span id="packageTitle" class="detail-input alert alert-success">
+                Active
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
+                </svg>
+            </span>
+        </div>
+      
+        <div class="detail-item">
+            <label for="createdBy" class="detail-label">Created By:</label>
+            <span id="createdBy" class="detail-value">@Model.Account.Full_Name</span>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="button" class="btn-add-sample" data-bs-toggle="modal" data-bs-target="#createSampleModal">Add Sample</button>
+    </div>
 </div>
 
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a> |
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</p>
+<!-- Modal -->
+<div class="modal fade" id="createSampleModal" tabindex="-1" aria-labelledby="createSampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createSampleModalLabel">Create New Sample</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control form-control-lg bg-light fs-6 " placeholder="Patient Name" />
+                    </div>
+                    <div class="input-group mb-4">
+                        <input type="text" class="form-control form-control-lg bg-light fs-6 " placeholder="Patient Phone" />
+                    </div>
+                    <div class="mb-3">
+                        <select id="sampleType" class="form-select form-select-lg bg-light">
+                            <option selected disabled>Select sample type</option>
+                            <option value="blood">Blood</option>
+                            <option value="urine">Urine</option>
+                            <option value="saliva">Saliva</option>
+                            <option value="tissue">Tissue</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+

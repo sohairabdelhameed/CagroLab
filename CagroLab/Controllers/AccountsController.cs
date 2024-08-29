@@ -94,7 +94,8 @@ namespace CagroLab.Controllers
 
             HttpContext.Session.SetInt32("Lab_Id", lab.Id);
             HttpContext.Session.SetInt32("Account_Id", account.Id);
-            return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
+            return RedirectToAction("Index", "Home");
+           // return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
         }
 
         [HttpGet]

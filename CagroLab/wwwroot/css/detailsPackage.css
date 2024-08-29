@@ -1,0 +1,126 @@
+﻿/* General reset */
+body, h1, label, input, textarea, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    background-image:url(~/images/mainLabImage.png)
+}
+
+/* Container for the details sheet */
+.details-sheet {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #21D8B3;
+}
+
+/* Title */
+.header-title {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Details group styling */
+.details-group {
+    margin-bottom: 20px;
+}
+
+/* Detail item styling */
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.detail-label {
+    width: 150px;
+    font-weight: bold;
+    color: #333;
+}
+
+.detail-value {
+    flex: 1;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    color: #555;
+}
+
+/* Input and textarea styling */
+.detail-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+}
+
+    .detail-input:focus {
+        border-color: #21D8B3;
+        outline: none;
+    }
+
+/* Actions (buttons) styling */
+.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn-add-sample, .btn-create {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-add-sample {
+    background-color: #ffffff;
+    color: #21D8B3;
+    border: 2px solid #21D8B3;
+}
+
+    .btn-add-sample:hover {
+        background-color: #21D8B3;
+        color: #ffffff;
+    }
+
+.btn-create {
+    background-color: #21D8B3;
+    color: #ffffff;
+}
+
+    .btn-create:hover {
+        background-color: #1aab96;
+    }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .details-sheet {
+        padding: 15px;
+    }
+
+    .header-title {
+        font-size: 20px;
+    }
+
+    .detail-label {
+        width: 120px;
+    }
+
+    .btn-add-sample, .btn-create {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}

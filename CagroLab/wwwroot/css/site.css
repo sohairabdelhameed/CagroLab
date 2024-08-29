@@ -161,3 +161,25 @@ footer h5 {
     font-weight:400;
     font-size:24px;
 }
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.image-section {
+    height: auto; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.full-screen-image {
+    height: auto;
+    width: 100%;
+    object-fit: cover; /* Ensure the image covers the entire section */
+}
