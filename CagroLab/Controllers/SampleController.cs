@@ -50,9 +50,9 @@ namespace CagroLab.Controllers
         }
 
         public async Task<IActionResult> ListByPackage(int id)
-        {//TODO: Ahmad
+        {
             var samples = await _dbContext.Sample
-                .Where(p => (int)p.Package_Id == id)
+                .Where(p => p.Package_Id == id)
                 .Include(p => p.Account)
                 .Include(p => p.Package)
                 .ToListAsync();
@@ -154,7 +154,7 @@ namespace CagroLab.Controllers
                     _dbContext.Sample.Add(sample);
                     _dbContext.SaveChanges();
                     _logger.LogInformation("Sample created successfully with ID {SampleId}.", sample.Id);
-                    return RedirectToAction(nameof(Index), new { accountId = viewModel.Account_Id });
+                    return RedirectToAction(nameof(ListByPackage), new { id = sample.Package_Id });
                 }
                 catch (Exception ex)
                 {

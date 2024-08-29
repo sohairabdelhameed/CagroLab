@@ -3,7 +3,7 @@
     ViewData["Title"] = "Samples";
 }
 
-<link href="https://cdn.datatables  .net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 <link href="~/css/package.css" rel="stylesheet" />
 <div class="container min-vh-100">
     <!-- Sample List -->
@@ -81,12 +81,14 @@
                     <div class="input-group mb-2">
                         <input type="text" id="Patient_Phone" name="Patient_Phone" class="form-control form-control-lg bg-light fs-6" placeholder="Patient phone" />
                     </div>
+
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="createSampleForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="createSampleForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
-            </div>
+            
         </div>
     </div>
 </div>
