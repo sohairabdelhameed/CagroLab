@@ -100,7 +100,7 @@ namespace CagroLab.Controllers
             if (accountId == null)
             {
                 _logger.LogWarning("Login session invalid.");
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Accounts");
             }
 
             if (packageId == null)
@@ -108,8 +108,7 @@ namespace CagroLab.Controllers
                 //TODO: redirect to somewhere else
             }
 
-            var sampleTypes = new List<String>() { "Blood", "Tissue", "Bone marrow"}; //TODO: Add a proper DB table for sample types
-            //TODO: Add a list of patients instead of patient name being entered as text
+            var sampleTypes = new List<String>() { "Blood", "Tissue", "Bone marrow"};
 
             var viewModel = new SampleViewModel(){
                 Account_Id = accountId.Value,
@@ -125,29 +124,21 @@ namespace CagroLab.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateSampleDto viewModel)
         {
-            //TODO: IMPORTANT: make sample type into a select, not a text input
-
             _logger.LogInformation("Create sample request: {@ViewModel}", viewModel);
+
             var accountId = HttpContext.Session.GetInt32("Account_Id");
             if (ModelState.IsValid)
             {
-                var labId = HttpContext.Session.GetInt32("Lab_Id");
-                if (labId == null)
-                {
-                    _logger.LogWarning("Lab ID not found in session. Redirecting to login.");
-                    return RedirectToAction("Login", "Account");
-                }
 
+                // Create a new Sample object
+                var sample = new Sample();
 
-                //TODO: Use automapper
-                var sample = new Sample
-                {
-                    Account_Id = (int)viewModel.Account_Id!,
-                    Package_Id = (int)viewModel.Package_Id,
-                    Sample_Type_Id = (int)viewModel.Sample_Type_Id,
-                    Patient_Name = viewModel.Patient_Name,
-                    Patient_Phone = viewModel.Patient_Phone,
-                };
+                sample.Account_Id = (int)viewModel.Account_Id!;
+                sample.Package_Id = (int)viewModel.Package_Id;
+                sample.Sample_Type = $"[{viewModel.Sample_Type_Id}] - [{viewModel.Concatenated_SubSample_Types}]";
+                sample.Patient_Name = viewModel.Patient_Name;
+                sample.Patient_Phone = viewModel.Patient_Phone;
+                
 
                 try
                 {
@@ -171,10 +162,10 @@ namespace CagroLab.Controllers
                 }
             }
 
-
-            //viewModel.Accounts = accounts;
-            return View(viewModel);
+            return RedirectToAction(nameof(Create), new { packageId = viewModel.Account_Id});
+      
         }
+
 
     }
 }
