@@ -91,9 +91,10 @@ namespace CagroLab.Controllers
                 return View(model);
             }
 
+            HttpContext.Session.SetString("Username", account.Username);
             HttpContext.Session.SetInt32("Account_Id", account.Id);
-
             HttpContext.Session.SetInt32("Lab_Id", account.Lab_Id);
+
 
             if (account.Main_Account == true)
             {
