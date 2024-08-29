@@ -131,14 +131,14 @@ namespace CagroLab.Controllers
             {
 
                 // Create a new Sample object
-                var sample = new Sample
-                {
-                    Account_Id = (int)viewModel.Account_Id!,
-                    Package_Id = (int)viewModel.Package_Id,
-                    Sample_Type =$"[{viewModel.Sample_Type_Id}] - [{viewModel.SubSample_Type_Id}]",
-                    Patient_Name = viewModel.Patient_Name,
-                    Patient_Phone = viewModel.Patient_Phone,
-                };
+                var sample = new Sample();
+
+                sample.Account_Id = (int)viewModel.Account_Id!;
+                sample.Package_Id = (int)viewModel.Package_Id;
+                sample.Sample_Type = $"[{viewModel.Sample_Type_Id}] - [{viewModel.Concatenated_SubSample_Types}]";
+                sample.Patient_Name = viewModel.Patient_Name;
+                sample.Patient_Phone = viewModel.Patient_Phone;
+                
 
                 try
                 {
