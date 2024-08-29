@@ -1,0 +1,114 @@
+﻿@model CagroLab.ViewModel.SampleListViewModel
+@{
+    ViewData["Title"] = "Samples";
+}
+
+<link href="https://cdn.datatables  .net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="~/css/package.css" rel="stylesheet" />
+<div class="container min-vh-100">
+    <!-- Sample List -->
+    <div class="row">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center my-4 position-relative">
+                <h2 class="fw-bold position-relative z-1" style="background-color: #21D8B3; padding-left: 30px;">
+                    <span style="background-color: white; padding: 0 10px;">Lab <i>Sample</i></span>
+                </h2>
+                <button class="btn btn-add" style="background-color: #21D8B3; color: white;" type="button" data-bs-toggle="modal" data-bs-target="#createSampleModal">
+                    Add new sample
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <table id="example" class="table">
+        <thead class="table-light custom-header">
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Patient Name</th>
+                <th>Patient Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var sample in Model.Samples)
+                {
+                    <tr>
+                        <td>@sample.Id</td>
+                        <td>@sample.Sample_Type_Id</td>
+                        <td>@sample.Patient_Name</td>
+                        <td>@sample.Patient_Phone</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No samples available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal for Creating a New Sample -->
+
+
+<!-- ... Other HTML content ... -->
+<!-- Modal for Creating a New Sample -->
+<div class="modal fade" id="createSampleModal" tabindex="-1" aria-labelledby="createSampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createSampleModalLabel">Create New Sample</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form to Post Data -->
+                <form asp-controller="Sample" asp-action="Create" method="post" id="createSampleForm">
+                    <input hidden id="Package_Id" name="Package_Id" type="text" value="@Model.Package_Id" />
+                    <input hidden id="Account_Id" name="Account_Id" type="text" value="@Model.Account_Id" />
+                    <div class="input-group mb-2">
+                        <input id="Sample_Type_Id" name="Sample_Type_Id" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Type Id" />
+                    </div>
+                    <div class="input-group mb-2">
+                        <input id="Patient_Name" name="Patient_Name" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Patient name" />
+                    </div>
+                    <div class="input-group mb-2">
+                        <input type="text" id="Patient_Phone" name="Patient_Phone" class="form-control form-control-lg bg-light fs-6" placeholder="Patient phone" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="createSampleForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                lengthChange: true,
+                pageLength: 10
+            });
+        });
+    </script>
+}

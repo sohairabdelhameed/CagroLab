@@ -1,0 +1,113 @@
+﻿@model CagroLab.ViewModel.AccountListViewModel
+@{
+    ViewData["Title"] = "Lab Details";
+}
+
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="~/css/package.css" rel="stylesheet" />
+<div class="container min-vh-100">
+    <!-- Account List -->
+    <div class="row">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center my-4 position-relative">
+                <h2 class="fw-bold position-relative z-1" style="background-color: #21D8B3; padding-left: 30px;">
+                    <span style="background-color: white; padding: 0 10px;">Lab <i>Accounts</i></span>
+                </h2>
+                <button class="btn btn-add" style="background-color: #21D8B3; color: white;" type="button" data-bs-toggle="modal" data-bs-target="#createAccountModal">
+                    Add new account
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <table id="example" class="table">
+        <thead class="table-light custom-header">
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Last Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var account in Model.Accounts)
+                {
+                    <tr>
+                        <td>@account.Id</td>
+                        <td>@account.Full_Name</td>
+                        <td>@account.Username</td>
+                        <td>@account.Last_Activity?.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No accounts available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal for Creating a New Account -->
+
+
+<!-- ... Other HTML content ... -->
+<!-- Modal for Creating a New Account -->
+<div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createAccountModalLabel">Create New Account</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form to Post Data -->
+                <form asp-controller="Accounts" asp-action="Create" method="post" id="createAccountForm">
+                    <input hidden id="Lab_Id" name="Lab_Id" type="text" value="@Model.Lab_Id" />
+                    <div class="input-group mb-2">
+                        <input id="Full_Name" name="Full_Name" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Full Name" />
+                    </div>
+                    <div class="input-group mb-2">
+                        <input id="Username" name="Username" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Username" />
+                    </div>
+                    <div class="input-group mb-2">
+                        <input type="password" id="Account_Password" name="Account_Password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="createAccountForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                lengthChange: true,
+                pageLength: 10
+            });
+        });
+    </script>
+}
