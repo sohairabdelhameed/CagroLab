@@ -71,8 +71,47 @@
                 </div>
             </div>
 
-            <div class="Ellipse-18"></div>
-            <span class="profile" icon="">
+
+            <div class="dropdown">
+                @if (Context.Session.GetString("Username") != null)
+                {
+                    <button class="btn dropdown-toggle" style="background-color:transparent" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="~/images/User.png" alt="User Icon" class="icon-image" /> @Context.Session.GetString("Username")
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @* Check if the user is a Lab based on session data *@
+                        @{
+                            var isLab = Context.Session.GetString("IsLab");
+                            bool isLabBoolean = !string.IsNullOrEmpty(isLab) && bool.Parse(isLab);
+                        }
+                        @if (isLabBoolean)
+                        {
+
+                            <button class="btn dropdown-item" style="color: black;" type="button" data-bs-toggle="modal" data-bs-target="#createAccountModal">
+                                Add new account
+                                
+                            </button>
+                        }
+                        <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                        <li>
+                            <form asp-controller="Accounts" asp-action="Logout" method="post" style="display:inline;">
+                                <button type="submit" class="dropdown-item">Logout</button>
+                                @Html.AntiForgeryToken()
+                            </form>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Accounts")" class="login-button">Login <i class="bi bi-door-open"></i></a>
+                }
+            </div>
+
+
+
+
+
+           @*  <span class="profile" icon="">
                 @if (Context.Session.GetString("Username") != null)
                  {
                     <img src="~/images/User.png" alt="User Icon" class="icon-image" /> @Context.Session.GetString("Username")
@@ -83,7 +122,7 @@
                 }              
                 
             </span>
-
+ *@
          
 
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
