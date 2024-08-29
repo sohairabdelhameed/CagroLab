@@ -30,7 +30,7 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Package Date</th>
-                <th>Lab Name</th>
+                <th>Samples</th>
             </tr>
         </thead>
         <tbody>
@@ -43,7 +43,9 @@
                         <td>@package.Title</td>
                         <td>@package.Package_Description</td>
                         <td>@package.Package_Date.ToString("yyyy-MM-dd")</td>
-                        <td>@package.Lab?.Lab_Name</td> <!-- Assuming LabName is a property in the Lab model -->
+                        <td>
+                                <a href="@Url.Action("ListByPackage", "Sample", new {id = @package.Id})" class="btn btn-add" style="background-color: #21D8B3; color: white;" type="button">Manage</a>
+                        </td> <!-- Assuming LabName is a property in the Lab model -->
                     </tr>
                 }
             }
