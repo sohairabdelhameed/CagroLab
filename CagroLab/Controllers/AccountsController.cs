@@ -81,7 +81,6 @@ namespace CagroLab.Controllers
                 return View(model);
             }
 
-
             var account = _dbContext.Account.Include(a => a.Lab)
                 .FirstOrDefault(a => (a.Username == model.Username) && a.Account_Password == model.Password);
 
@@ -95,6 +94,8 @@ namespace CagroLab.Controllers
             HttpContext.Session.SetInt32("Account_Id", account.Id);
             HttpContext.Session.SetInt32("Lab_Id", account.Lab_Id);
 
+            // Set a boolean value as a string in session
+            HttpContext.Session.SetString("IsLab", account.Main_Account.ToString());
 
             if (account.Main_Account == true)
             {
@@ -102,8 +103,20 @@ namespace CagroLab.Controllers
             }
 
             return RedirectToAction("Index", "Package", new { id = account.Id });
-
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            // Clear the session data
+            HttpContext.Session.Clear();
+
+            // Redirect to the login page or home page
+            return RedirectToAction("Login");
+        }
+
 
         [HttpGet]
         public IActionResult Create()
