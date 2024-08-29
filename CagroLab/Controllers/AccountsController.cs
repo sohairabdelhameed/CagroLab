@@ -92,6 +92,7 @@ namespace CagroLab.Controllers
             }
 
             HttpContext.Session.SetInt32("Account_Id", account.Id);
+
             HttpContext.Session.SetInt32("Lab_Id", account.Lab_Id);
 
             if (account.Main_Account == true)
@@ -100,6 +101,7 @@ namespace CagroLab.Controllers
             }
 
             return RedirectToAction("Index", "Package", new { id = account.Id });
+
         }
 
         [HttpGet]
