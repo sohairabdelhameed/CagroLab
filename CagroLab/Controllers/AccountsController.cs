@@ -80,21 +80,26 @@ namespace CagroLab.Controllers
                 ModelState.AddModelError(string.Empty, errorMessages);
                 return View(model);
             }
-            var lab = _dbContext.Lab
-                .FirstOrDefault(l => (l.Lab_Username == model.Username || l.Email == model.Username) && l.Lab_Password == model.Password);
 
-            var account = _dbContext.Account
-                .FirstOrDefault(l => (l.Username == model.Username || l.Full_Name == model.Username) && l.Account_Password == model.Password);
 
-            if (lab is null)
+            var account = _dbContext.Account.Include(a => a.Lab)
+                .FirstOrDefault(a => (a.Username == model.Username) && a.Account_Password == model.Password);
+
+            if (account == null)
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
+                model.Message = "Username and password do not match";
                 return View(model);
             }
 
-            HttpContext.Session.SetInt32("Lab_Id", lab.Id);
             HttpContext.Session.SetInt32("Account_Id", account.Id);
-            return RedirectToAction("Details", "AccountsDetails", new { id = lab.Id });
+            HttpContext.Session.SetInt32("Lab_Id", account.Lab_Id);
+
+            if (account.Main_Account == true)
+            {
+                return RedirectToAction("Index", "AccountsDetails", new { id = account.Lab_Id });
+            }
+
+            return RedirectToAction("Index", "Package", new { id = account.Id });
         }
 
         [HttpGet]
@@ -116,11 +121,12 @@ namespace CagroLab.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(AccountRegistrationViewModel model)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CreateAccountDto model)
         {
             if (ModelState.IsValid)
             {
-                var lab = _dbContext.Lab.Find(model.Lab_Id);
+                var lab = _dbContext.Lab.Find(HttpContext.Session.GetInt32("Lab_Id"));
 
                 if (lab != null)
                 {
@@ -129,8 +135,8 @@ namespace CagroLab.Controllers
                         Username = model.Username,
                         Account_Password = model.Account_Password,
                         Full_Name = model.Full_Name,
-                        Is_Active = model.Is_Active,
-                        Main_Account = model.Main_Account,
+                        //Is_Active = model.Is_Active,
+                        //Main_Account = model.Main_Account,
                         Lab = lab,
                         Last_Activity = DateTime.Now,
                         Last_Login = DateTime.Now
@@ -140,7 +146,7 @@ namespace CagroLab.Controllers
                     _dbContext.Account.Add(account);
                     _dbContext.SaveChanges();
 
-                    return RedirectToAction("ListsAccounts", "AccountsDetails", new { id = lab.Id });
+                    return RedirectToAction("Index", "AccountsDetails", new { id = lab.Id });
                 }
 
                 // If the lab is not found, return an error
