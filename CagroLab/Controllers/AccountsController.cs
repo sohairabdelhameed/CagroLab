@@ -144,7 +144,7 @@ namespace CagroLab.Controllers
                         Last_Login = DateTime.Now
                     };
 
-                   
+
                     _dbContext.Account.Add(account);
                     _dbContext.SaveChanges();
 
