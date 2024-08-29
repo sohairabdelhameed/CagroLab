@@ -44,7 +44,7 @@ namespace CagroLab
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Accounts}/{action=LogIn}/{id?}");
+                pattern: "{controller=Home}/{action=Index}");
 
             app.Run();
         }
