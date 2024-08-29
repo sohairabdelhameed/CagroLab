@@ -59,7 +59,7 @@ namespace CagroLab.Controllers
             var accountId = HttpContext.Session.GetInt32("Account_Id");
             if (accountId == null)
             {
-                return BadRequest("Account ID is required.");
+                return RedirectToAction("Login", "Account");
             }
 
             var packages = _dbContext.Package
