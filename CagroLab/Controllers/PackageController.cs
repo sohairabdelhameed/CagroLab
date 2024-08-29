@@ -59,7 +59,7 @@ namespace CagroLab.Controllers
             var accountId = HttpContext.Session.GetInt32("Account_Id");
             if (accountId == null)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Accounts");
             }
 
             var packages = _dbContext.Package
@@ -83,7 +83,7 @@ namespace CagroLab.Controllers
             var accountId = HttpContext.Session.GetInt32("Account_Id");
             if (labId == null)
             {
-                return RedirectToAction("Login", "Account"); // Redirect to login if no Lab ID
+                return RedirectToAction("Login", "Accounts"); // Redirect to login if no Lab ID
             }
 
             var accounts = _dbContext.Account
@@ -180,7 +180,7 @@ namespace CagroLab.Controllers
             var labId = HttpContext.Session.GetInt32("Lab_Id");
             if (labId == null)
             {
-                return RedirectToAction("Login", "Account"); // Redirect to login if no Lab ID
+                return RedirectToAction("Login", "Accounts"); // Redirect to login if no Lab ID
             }
 
             var accounts = _dbContext.Account
@@ -214,7 +214,7 @@ namespace CagroLab.Controllers
                 var labId = HttpContext.Session.GetInt32("Lab_Id");
                 if (labId == null)
                 {
-                    return RedirectToAction("Login", "Account"); // Redirect to login if no Lab ID
+                    return RedirectToAction("Login", "Accounts"); // Redirect to login if no Lab ID
                 }
 
                 var package = _dbContext.Package.FirstOrDefault(p => p.Id == viewModel.Id);

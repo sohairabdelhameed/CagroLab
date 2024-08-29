@@ -39,7 +39,7 @@
                 {
                     <tr>
                         <td>@sample.Id</td>
-                        <td>@sample.Sample_Type_Id</td>
+                        <td>@sample.Sample_Type</td>
                         <td>@sample.Patient_Name</td>
                         <td>@sample.Patient_Phone</td>
                     </tr>
@@ -73,7 +73,18 @@
                     <input hidden id="Package_Id" name="Package_Id" type="text" value="@Model.Package_Id" />
                     <input hidden id="Account_Id" name="Account_Id" type="text" value="@Model.Account_Id" />
                     <div class="input-group mb-2">
-                        <input id="Sample_Type_Id" name="Sample_Type_Id" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Type Id" />
+                        <select id="Sample_Type_Id" name="Sample_Type_Id" class="form-control form-control-lg bg-light fs-6" onchange="updateSubSampleTypes()">
+                            <option value="">Select Sample Type</option>
+                            <option value="bold">Bold</option>
+                            <option value="anotherType">Another Type</option>
+                        </select>
+                    </div>
+
+                    <!-- Second Dropdown (Sub-Sample Types) -->
+                    <div class="input-group mb-2">
+                        <select id="SubSample_Type_Id" name="SubSample_Type_Id" class="form-control form-control-lg bg-light fs-6">
+                            <option value="">Select Sub-Sample Type</option>
+                        </select>
                     </div>
                     <div class="input-group mb-2">
                         <input id="Patient_Name" name="Patient_Name" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Patient name" />
@@ -96,6 +107,43 @@
 
 
 @section Scripts {
+
+    <script>
+        function updateSubSampleTypes() {
+            // Get selected sample type
+            var sampleType = document.getElementById("Sample_Type_Id").value;
+
+            // Get the sub-sample dropdown
+            var subSampleDropdown = document.getElementById("SubSample_Type_Id");
+
+            // Clear previous options
+            subSampleDropdown.innerHTML = '<option value="">Select Sub-Sample Type</option>';
+
+            // Define sub-sample types based on the selected sample type
+            var subSampleOptions = {
+                "bold": [
+                    { value: "CBC", text: "CBC" },
+                    { value: "X-Ray", text: "X-Ray" }
+                ],
+                "anotherType": [
+                    { value: "option1", text: "Option 1" },
+                    { value: "option2", text: "Option 2" }
+                ]
+            };
+
+            // Populate sub-sample dropdown based on the selected sample type
+            if (subSampleOptions[sampleType]) {
+                subSampleOptions[sampleType].forEach(function (option) {
+                    var newOption = document.createElement("option");
+                    newOption.value = option.value;
+                    newOption.text = option.text;
+                    subSampleDropdown.add(newOption);
+                });
+            }
+        }
+    </script>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
@@ -113,4 +161,7 @@
             });
         });
     </script>
+
+
+   
 }
