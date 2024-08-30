@@ -9,6 +9,8 @@ namespace CagroLab.ViewModel
         public List<Sample>? Samples { get; set; }
 
         public CreateSampleDto NewSample { get; set; }
+
+        public int SelectedId { get; set; }
     }
 
     public class CreateSampleDto
@@ -20,5 +22,6 @@ namespace CagroLab.ViewModel
         public string Concatenated_SubSample_Types { get; set; } 
         public string? Patient_Name { get; set; }
         public string? Patient_Phone { get; set; }
+        public string? Status { get; set; }
     }
 }

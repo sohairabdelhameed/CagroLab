@@ -126,7 +126,8 @@ namespace CagroLab.Controllers
                     Title = viewModel.Title,
                     Package_Description = viewModel.Description,
                     Account_Id = (int)viewModel.Account_Id!,
-                    Lab_Id = (int)labId
+                    Lab_Id = (int)labId,
+                    Status = viewModel.Status
                 };
 
                 try
@@ -199,7 +200,8 @@ namespace CagroLab.Controllers
                 Package_Description = package.Package_Description,
                 Account_Id = package.Account_Id,
                 Lab_Id = package.Lab_Id,
-                Accounts = accounts
+                Accounts = accounts,
+                Status = package.Status
             };
 
             return View(viewModel);
@@ -229,6 +231,7 @@ namespace CagroLab.Controllers
                 package.Package_Description = viewModel.Package_Description;
                 package.Account_Id = viewModel.Account_Id;
                 package.Lab_Id = (int)labId;
+                package.Status = viewModel.Status;
 
                 try
                 {
@@ -312,6 +315,25 @@ namespace CagroLab.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateStatus(PackageViewModel viewModel)
+        {
+            var package = await _dbContext.Package.FirstOrDefaultAsync(p => p.Id == viewModel.Id);
+            try
+            {
+                package.Status = viewModel.Status;
+                _dbContext.Update(package);
+                _dbContext.SaveChanges();
+                _logger.LogInformation("Package updated successfully with ID {PackageId}.", package.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating package.");
+                ModelState.AddModelError("", "An error occurred while updating the package.");
+            }
+            return RedirectToAction("Index");
+        }
 
 
 

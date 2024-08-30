@@ -27,6 +27,7 @@ namespace CagroLab.ViewModel
 
 
         public List<String>? SampleTypes { get; set; }
+        public string? Status { get; set; }
     }
 
 }

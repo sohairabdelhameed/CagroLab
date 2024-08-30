@@ -138,6 +138,7 @@ namespace CagroLab.Controllers
                 sample.Sample_Type = $"[{viewModel.Sample_Type_Id}] - [{viewModel.Concatenated_SubSample_Types}]";
                 sample.Patient_Name = viewModel.Patient_Name;
                 sample.Patient_Phone = viewModel.Patient_Phone;
+                sample.Status = viewModel.Status;
                 
 
                 try
@@ -166,6 +167,33 @@ namespace CagroLab.Controllers
       
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateStatus(SampleViewModel viewModel)
+        {
+            var sample = await _dbContext.Sample.FirstOrDefaultAsync(p => p.Id == viewModel.Id);
+            try
+            {
+                sample.Status = viewModel.Status;
+                _dbContext.Update(sample);
+                _dbContext.SaveChanges();
+                _logger.LogInformation("Sample updated successfully with ID {SampleId}.", sample.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating sample.");
+                ModelState.AddModelError("", "An error occurred while updating the sample.");
+            }
+            if (sample != null)
+            {
+                return RedirectToAction("ListByPackage", new { id = sample.Package_Id });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Package");
+            }
+        }
 
     }
 }

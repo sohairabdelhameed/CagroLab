@@ -20,7 +20,8 @@
         public int Account_Id { get; set; }
        
         public Account Account { get; set; }
-       
+
+        public string? Status { get; set; }
 
 
 
