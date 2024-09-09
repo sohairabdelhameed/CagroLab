@@ -7,7 +7,7 @@
         public int Package_Id { get; set; }
 
         public Package Package { get; set; }
-        public int Sample_Type_Id { get; set; }
+        public string Sample_Type { get; set; }
 
         public string? Patient_Name  { get; set; }
 
@@ -20,7 +20,8 @@
         public int Account_Id { get; set; }
        
         public Account Account { get; set; }
-       
+
+        public string? Status { get; set; }
 
 
 

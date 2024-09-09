@@ -9,6 +9,7 @@ namespace CagroLab.ViewModel
         public List<Package>? Packages { get; set; }
 
         public CreatePackageDto NewPackage { get; set; }
+        public int SelectedId { get; set; }
     }
 
     public class CreatePackageDto
@@ -17,5 +18,6 @@ namespace CagroLab.ViewModel
         public string Description { get; set; }
 
         public int? Account_Id { get; set; }
+        public string? Status { get; set; }
     }
 }

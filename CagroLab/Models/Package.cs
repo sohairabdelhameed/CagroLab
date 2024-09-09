@@ -14,5 +14,6 @@
         public Lab Lab { get; set; }
         public ICollection<Sample> Samples { get; set; } // Navigation property
 
+        public string? Status { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model CagroLab.ViewModel.PackageListViewModel
+@model CagroLab.ViewModel.PackageListViewModel
 @{
     ViewData["Title"] = "Packages";
 }
@@ -30,7 +30,10 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Package Date</th>
-                <th>Lab Name</th>
+                <th>Status</th>
+
+                <th>Samples</th>
+
             </tr>
         </thead>
         <tbody>
@@ -42,8 +45,20 @@
                         <td>@package.Id</td>
                         <td>@package.Title</td>
                         <td>@package.Package_Description</td>
+
                         <td>@package.Package_Date.ToString("yyyy-MM-dd")</td>
-                        <td>@package.Lab?.Lab_Name</td> <!-- Assuming LabName is a property in the Lab model -->
+                        <td>
+                            @package.Status
+                            <button class="btn btn-edit" style="padding:0px; line-height:0.5; background-color: #21D8B3; color: white; width:24px; height:24px;" type="button" data-bs-toggle="modal" data-bs-target="#updateStatusModal" onclick="setSelectedId(@package.Id)">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
+
+                            </button>
+                        </td>
+                        <td>
+                                <a href="@Url.Action("ListByPackage", "Sample", new {id = @package.Id})" class="btn btn-add" style="background-color: #21D8B3; color: white;" type="button">Manage</a>
+                        </td> <!-- Assuming LabName is a property in the Lab model -->
+
                     </tr>
                 }
             }
@@ -80,11 +95,56 @@
                     <div class="input-group mb-2">
                         <textarea id="Description" name="Description" class="form-control form-control-lg bg-light fs-6" placeholder="Description" style="height:180px"></textarea>
                     </div>
+                    <div class="input-group mb-2">
+                        <select id="Status" name="Status" class="form-control form-control-lg bg-light fs-6">
+                            <option value="">Select Status</option>
+                            <option value="New">New</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Underprocess">Underprocess</option>
+                            <option value="Partially delivered">Partially delivered</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" form="createPackageForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit status modal -->
+<div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="updateStatusModalLabel">Change Status</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form to Post Data -->
+                <form asp-action="UpdateStatus" method="post" id="updateStatusForm">
+                    <input hidden id="Id" name="Id" type="text" value="-1" />
+                    
+
+                    <div class="input-group mb-2">
+                        <select id="Status" name="Status" class="form-control form-control-lg bg-light fs-6">
+                            <option value="">Select Status</option>
+                            <option value="New">New</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Underprocess">Underprocess</option>
+                            <option value="Partially delivered">Partially delivered</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" onclick="getSelectedId()" form="updateStatusForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Save</button>
             </div>
         </div>
     </div>
@@ -109,5 +169,18 @@
                 pageLength: 10
             });
         });
+    </script>
+
+    <script>
+        var selectedId = -1;
+        function setSelectedId(id) {
+            selectedId = id;
+            console.log(selectedId);
+        }
+        function getSelectedId() {
+            $("#Id").attr("value",selectedId);
+            console.log(document.getElementById('Id'));
+            console.log($("#Id"));
+        }
     </script>
 }

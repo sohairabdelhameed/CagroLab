@@ -54,6 +54,25 @@ namespace CagroLab.Controllers
 
             return View(lab);
         }
+        public IActionResult Index(int id)
+        {
+            var lab = _dbContext.Lab
+                .Include(l => l.Accounts)
+                .FirstOrDefault(l => l.Id == id);
+
+            if (lab == null)
+            {
+                return NotFound();
+            }
+            var viewModel = new AccountListViewModel()
+            {
+                Accounts = lab.Accounts.ToList(),
+                Lab_Id = id,
+                Account_Id = HttpContext.Session.GetInt32("Account_Id"),
+                NewAccount = new CreateAccountDto()
+            };
+            return View(viewModel);
+        }
 
         public IActionResult ViewAccounts()
         {

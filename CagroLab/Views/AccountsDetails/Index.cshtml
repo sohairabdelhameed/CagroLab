@@ -1,0 +1,80 @@
+﻿@model CagroLab.ViewModel.AccountListViewModel
+@{
+    ViewData["Title"] = "Lab Details";
+}
+
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="~/css/package.css" rel="stylesheet" />
+<div class="container min-vh-100">
+    <!-- Account List -->
+    <div class="row">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center my-4 position-relative">
+                <h2 class="fw-bold position-relative z-1" style="background-color: #21D8B3; padding-left: 30px;">
+                    <span style="background-color: white; padding: 0 10px;">Lab <i>Accounts</i></span>
+                </h2>
+                @* <button class="btn btn-add" style="background-color: #21D8B3; color: white;" type="button" data-bs-toggle="modal" data-bs-target="#createAccountModal">
+                    Add new account
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                </button> *@
+            </div>
+        </div>
+    </div>
+
+    <table id="example" class="table">
+        <thead class="table-light custom-header">
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Last Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var account in Model.Accounts)
+                {
+                    <tr>
+                        <td>@account.Id</td>
+                        <td>@account.Full_Name</td>
+                        <td>@account.Username</td>
+                        <td>@account.Last_Activity?.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No accounts available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal for Creating a New Account -->
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                lengthChange: true,
+                pageLength: 10
+            });
+        });
+    </script>
+}

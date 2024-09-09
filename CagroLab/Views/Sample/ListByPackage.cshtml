@@ -1,0 +1,304 @@
+﻿@model CagroLab.ViewModel.SampleListViewModel
+@{
+    ViewData["Title"] = "Samples";
+}
+
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="~/css/package.css" rel="stylesheet" />
+<div class="container min-vh-100">
+    <!-- Sample List -->
+    <div class="row">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center my-4 position-relative">
+                <h2 class="fw-bold position-relative z-1" style="background-color: #21D8B3; padding-left: 30px;">
+                    <span style="background-color: white; padding: 0 10px;">Lab <i>Sample</i></span>
+                </h2>
+                <button class="btn btn-add" style="background-color: #21D8B3; color: white;" type="button" data-bs-toggle="modal" data-bs-target="#createSampleModal">
+                    Add new sample
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <table id="example" class="table">
+        <thead class="table-light custom-header">
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Patient Name</th>
+                <th>Patient Phone</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var sample in Model.Samples)
+                {
+                    <tr>
+                        <td>@sample.Id</td>
+                        <td>@sample.Sample_Type</td>
+                        <td>@sample.Patient_Name</td>
+                        <td>@sample.Patient_Phone</td>
+
+                        <td>
+                            @sample.Status
+                            <button class="btn btn-edit" style="padding:0px; line-height:0.5; background-color: #21D8B3; color: white; width:24px; height:24px;" type="button" data-bs-toggle="modal" data-bs-target="#updateStatusModal" onclick="setSelectedId(@sample.Id)">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
+
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No samples available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal for Creating a New Sample -->
+<!-- ... Other HTML content ... -->
+<!-- Modal for Creating a New Sample -->
+<div class="modal fade" id="createSampleModal" tabindex="-1" aria-labelledby="createSampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createSampleModalLabel">Create New Sample</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form to Post Data -->
+                <form asp-controller="Sample" asp-action="Create" method="post" id="createSampleForm">
+                    <input hidden id="Package_Id" name="Package_Id" type="text" value="@Model.Package_Id" />
+                    <input hidden id="Account_Id" name="Account_Id" type="text" value="@Model.Account_Id" />
+                    <input type="hidden" id="Concatenated_SubSample_Types" name="Concatenated_SubSample_Types" />
+
+
+                    <div class="input-group mb-2">
+                        <input id="Patient_Name" name="Patient_Name" type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Patient name" />
+                    </div>
+                    <div class="input-group mb-2">
+                        <input type="text" id="Patient_Phone" name="Patient_Phone" class="form-control form-control-lg bg-light fs-6" placeholder="Patient phone" />
+                    </div>
+
+                      <div class="input-group mb-2">
+                        <select id="Sample_Type_Id" name="Sample_Type_Id" class="form-control form-control-lg bg-light fs-6" onchange="updateSubSampleTypes()" >
+                            <option value="">Select Sample Type</option>
+                            <option value="Blod">Blod</option>
+                            <option value="Urine">Urine</option>
+                            <option value="Infection-Monitoring">Infection Monitoring</option>
+                            <option value="Electrolyte-Monitoring">Electrolyte Monitoring</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Second Dropdown (Sub-Sample Types) -->
+                    <div class="input-group mb-2">
+                        <select id="SubSample_Type_Id" name="SubSample_Type_Id" class="form-control form-control-lg bg-light fs-6 js-example-basic-multiple" multiple="multiple">
+                            <option value="">Select Sub-Sample Type</option>
+                        </select>
+                    </div>
+
+
+                    <div class="input-group mb-2">
+                        <select id="Status" name="Status" class="form-control form-control-lg bg-light fs-6">
+                            <option value="">Select Status</option>
+                            <option value="New">New</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Underprocess">Underprocess</option>
+                            <option value="Partially delivered">Partially delivered</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="createSampleForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Create</button>
+                    </div>
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit status modal -->
+<div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="updateStatusModalLabel">Change Status</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form to Post Data -->
+                <form asp-action="UpdateStatus" method="post" id="updateStatusForm">
+                    <input hidden id="Id" name="Id" type="text" value="-1" />
+
+
+                    <div class="input-group mb-2">
+                        <select id="Status" name="Status" class="form-control form-control-lg bg-light fs-6">
+                            <option value="">Select Status</option>
+                            <option value="New">New</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Underprocess">Underprocess</option>
+                            <option value="Partially delivered">Partially delivered</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" onclick="getSelectedId()" form="updateStatusForm" class="btn btn-lg" style="background-color:#21D8B3; color: white;">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                responsive: true,
+                lengthChange: true,
+                pageLength: 10
+            });
+
+            $('#SubSample_Type_Id').select2({
+                placeholder: "Select Sub-Sample Type",
+                allowClear: true
+            });
+        });
+
+
+    </script>
+
+ 
+
+    <script>
+        $(document).ready(function () {
+            $('#SubSample_Type_Id').select2({
+                placeholder: "Select Sub-Sample Type",
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Event listener to update concatenated string whenever selection changes
+            $('#SubSample_Type_Id').on('change', function () {
+                updateConcatenatedSubSampleTypes();
+            });
+        });
+
+        function updateSubSampleTypes() {
+            var sampleType = $('#Sample_Type_Id').val();
+            var subSampleSelect = $('#SubSample_Type_Id');
+
+            // Clear current options
+            subSampleSelect.empty();
+
+            // Add default option
+            subSampleSelect.append(new Option("Select Sub-Sample Type", ""));
+
+            // Define options based on selected Sample Type
+            var options = [];
+            if (sampleType === 'Blod') {
+                options = [
+                    { id: 'CBC', text: 'CBC (Complete Blood Count)' },
+                    { id: 'BloodGlucose', text: 'Blood Glucose' },
+                    { id: 'LipidProfile', text: 'Lipid Profile' }
+                ];
+            } else if (sampleType === 'Urine') {
+                options = [
+                    { id: 'Urinalysis', text: 'Urinalysis' },
+                    { id: 'UrineCulture', text: 'Urine Culture' },
+                    { id: '24HourCollection', text: '24-Hour Urine Collection' }
+                ];
+            } else if (sampleType === 'Infection-Monitoring') {
+                options = [
+                    { id: 'Culture', text: 'Culture' },
+                    { id: 'Sensitivity', text: 'Sensitivity' },
+                    { id: 'PCR', text: 'PCR' }
+                ];
+            } else if (sampleType === 'Electrolyte-Monitoring') {
+                options = [
+                    { id: 'Sodium', text: 'Sodium' },
+                    { id: 'Potassium', text: 'Potassium' },
+                    { id: 'Calcium', text: 'Calcium' }
+                ];
+            }
+
+            // Append options to dropdown
+            $.each(options, function (index, option) {
+                subSampleSelect.append(new Option(option.text, option.id));
+            });
+
+            // Trigger Select2 update
+            subSampleSelect.trigger('change');
+        }
+
+        function updateConcatenatedSubSampleTypes() {
+            var selectedValues = $('#SubSample_Type_Id').val();  // Get selected values
+            if (selectedValues && selectedValues.length > 0) {
+                var concatenatedString = selectedValues.join('-');  // Join values with a dash
+                $('#Concatenated_SubSample_Types').val(concatenatedString);  // Set hidden input value
+            } else {
+                $('#Concatenated_SubSample_Types').val('');  // Clear if no values are selected
+            }
+        }
+
+
+    </script>
+
+    <script>
+        var selectedId = -1;
+        function setSelectedId(id) {
+            selectedId = id;
+            console.log(selectedId);
+        }
+        function getSelectedId() {
+            $("#Id").attr("value", selectedId);
+            console.log(document.getElementById('Id'));
+            console.log($("#Id"));
+        }
+    </script>
+
+
+
+
+
+
+
+}
